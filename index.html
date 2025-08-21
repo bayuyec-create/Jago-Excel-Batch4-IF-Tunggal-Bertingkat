@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografis Interaktif: Fungsi IF Excel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://css.gg/css?=|info" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+        }
+        .flowchart-node {
+            border: 2px solid #00A6ED;
+            background-color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .flowchart-arrow {
+            position: relative;
+            height: 50px;
+            width: 2px;
+            background-color: #00A6ED;
+            margin: 0 auto;
+        }
+        .flowchart-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 10px solid #00A6ED;
+        }
+        .worksheet-container {
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+        .formula-bar {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background-color: #f9fafb;
+            border-bottom: 1px solid #d1d5db;
+            font-family: monospace;
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+        .formula-bar .fx {
+            font-style: italic;
+            font-weight: bold;
+            color: #6b7280;
+            margin-right: 0.75rem;
+            border: 1px solid #d1d5db;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.25rem;
+            background-color: #f3f4f6;
+        }
+        .editable-formula {
+            flex-grow: 1;
+            background-color: #fffbeb;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            outline: none;
+            border: 1px solid #fde68a;
+        }
+        .editable-formula:focus {
+            border-color: #00A6ED;
+            box-shadow: 0 0 0 2px rgba(0, 166, 237, 0.2);
+        }
+        .excel-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .excel-table th, .excel-table td {
+            border: 1px solid #e5e7eb;
+            padding: 0.75rem;
+            text-align: center;
+        }
+        .excel-table .header-cell, .excel-table .row-header {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            color: #4b5563;
+            user-select: none;
+        }
+        .excel-table .top-left-cell {
+            background-color: #e5e7eb;
+            border-color: #d1d5db;
+        }
+        .editable-cell {
+            background-color: #fffbeb;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .editable-cell:focus {
+            outline: 2px solid #00A6ED;
+            background-color: #ffffff;
+        }
+        .result-cell {
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            background-color: #f8fafc;
+        }
+        .apply-btn {
+            display: block;
+            width: 100%;
+            margin-top: 0.75rem;
+            padding: 0.5rem;
+            background-color: #00A6ED;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .apply-btn:hover {
+            background-color: #008ac4;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto max-w-5xl p-4 sm-p-6 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#00A6ED] mb-2">Menguasai Logika Excel</h1>
+            <p class="text-xl text-gray-600">Kenalan dengan Pahlawan Data: Fungsi IF</p>
+        </header>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-6">
+                <div class="text-center md:col-span-1">
+                    <div class="text-7xl font-bold text-[#F6511D]">1000+</div>
+                    <div class="text-lg font-semibold text-gray-700 mt-2">Baris Data?</div>
+                    <p class="text-gray-500">Klasifikasi manual bisa bikin pusing dan memakan waktu!</p>
+                </div>
+                <div class="md:col-span-2">
+                    <h2 class="text-2xl font-bold mb-3 text-[#00A6ED]">Solusinya? Biarkan Excel Berpikir!</h2>
+                    <p class="mb-4">Fungsi IF adalah cara kita memberi perintah logika kepada Excel. Konsepnya sangat sederhana, yaitu "Jika sebuah kondisi terpenuhi, lakukan sesuatu. Jika tidak, lakukan hal lain." Ini adalah dasar otomatisasi yang akan menghemat banyak waktu Anda.</p>
+                    <div class="flex flex-col items-center">
+                        <div class="flowchart-node">Kondisi</div>
+                        <div class="flowchart-arrow"></div>
+                        <div class="flex w-full justify-around">
+                            <div class="flex flex-col items-center w-1/2">
+                                <div class="text-sm font-bold text-[#7FB800]">✔️ BENAR</div>
+                                <div class="flowchart-arrow" style="background-color: #7FB800;"></div>
+                                <div class="flowchart-node" style="border-color: #7FB800;">Lakukan A</div>
+                            </div>
+                            <div class="flex flex-col items-center w-1/2">
+                                <div class="text-sm font-bold text-[#F6511D]">❌ SALAH</div>
+                                <div class="flowchart-arrow" style="background-color: #F6511D;"></div>
+                                <div class="flowchart-node" style="border-color: #F6511D;">Lakukan B</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#00A6ED]">1. IF Tunggal: Coba Sendiri!</h2>
+            <p class="text-center max-w-3xl mx-auto mb-4">Secara sederhana, <strong>IF Tunggal</strong> adalah fungsi logika yang paling dasar. Fungsi ini bekerja seperti saklar lampu: hanya ada dua pilihan, 'Nyala' atau 'Mati'. Anda memberinya satu syarat, dan ia akan memberikan satu dari dua kemungkinan hasil yang sudah Anda tentukan.</p>
+            <p class="text-center max-w-3xl mx-auto mb-8">Sekarang, ayo kita praktikkan. Ubah nilai di sel kuning (kolom B) atau <strong>ubah rumus di formula bar</strong>, lalu klik "Terapkan Rumus"!</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <div class="worksheet-container">
+                        <div class="formula-bar">
+                            <span class="fx">fx</span>
+                            <span id="formula-input-single" class="editable-formula" contenteditable="true">=IF(B2>75; "Lulus"; "Gagal")</span>
+                        </div>
+                        <table class="excel-table" id="tabel-if-tunggal">
+                            <thead>
+                                <tr>
+                                    <th class="top-left-cell"></th><th class="header-cell">A</th><th class="header-cell">B</th><th class="header-cell">C</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="row-header">1</td><td>Nama</td><td>Nilai</td><td>Keterangan</td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">2</td><td>Budi</td><td class="editable-cell" contenteditable="true">85</td><td class="result-cell"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">3</td><td>Ani</td><td class="editable-cell" contenteditable="true">60</td><td class="result-cell"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">4</td><td>Candra</td><td class="editable-cell" contenteditable="true">92</td><td class="result-cell"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">5</td><td>Dita</td><td class="editable-cell" contenteditable="true">75</td><td class="result-cell"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button id="apply-formula-single" class="apply-btn">Terapkan Rumus</button>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg mb-3 text-center">Struktur Rumus IF Tunggal</h3>
+                    <div class="bg-gray-50 p-4 rounded-lg border">
+                        <p class="font-mono text-center text-base md:text-lg mb-4">=IF(<span class="text-[#00A6ED]">tes_logika</span>; <span class="text-[#7FB800]">[nilai_jika_benar]</span>; <span class="text-[#F6511D]">[nilai_jika_salah]</span>)</p>
+                        <div class="space-y-3 text-sm">
+                            <p><strong class="text-[#00A6ED]">1. tes_logika:</strong> Ini adalah syarat yang diuji. Di contoh kita: <strong>B2 > 75</strong>. Apakah nilai di sel B2 lebih besar dari 75?</p>
+                            <p><strong class="text-[#7FB800]">2. [nilai_jika_benar]:</strong> Hasil jika syarat terpenuhi (BENAR). Di contoh kita: <strong>"Lulus"</strong>.</p>
+                            <p><strong class="text-[#F6511D]">3. [nilai_jika_salah]:</strong> Hasil jika syarat tidak terpenuhi (SALAH). Di contoh kita: <strong>"Gagal"</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#00A6ED]">2. IF Bertingkat: Uji Logikamu!</h2>
+            <p class="text-center max-w-3xl mx-auto mb-4"><strong>IF Bertingkat</strong> (atau <em>Nested IF</em>) adalah beberapa fungsi IF yang 'bersarang' atau dimasukkan ke dalam satu sama lain. Ini kita gunakan ketika ada lebih dari dua kemungkinan hasil. Anggap saja seperti diagram alur dengan beberapa cabang keputusan.</p>
+            <p class="text-center max-w-3xl mx-auto mb-8">Mari kita coba logika yang lebih kompleks ini. Ubah nilai atau rumus, lalu terapkan untuk melihat hasilnya.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div>
+                    <div class="worksheet-container">
+                        <div class="formula-bar">
+                            <span class="fx">fx</span>
+                            <span id="formula-input-nested" class="editable-formula" contenteditable="true">=IF(B2>85;"A";IF(B2>70;"B";IF(B2>60;"C";"D")))</span>
+                        </div>
+                        <table class="excel-table" id="tabel-if-bertingkat">
+                            <thead>
+                                <tr>
+                                    <th class="top-left-cell"></th><th class="header-cell">A</th><th class="header-cell">B</th><th class="header-cell">C</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="row-header">1</td><td>Nama</td><td>Nilai</td><td>Predikat</td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">2</td><td>Budi</td><td class="editable-cell" contenteditable="true">88</td><td class="result-cell"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">3</td><td>Ani</td><td class="editable-cell" contenteditable="true">65</td><td class="result-cell"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">4</td><td>Candra</td><td class="editable-cell" contenteditable="true">92</td><td class="result-cell"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">5</td><td>Dita</td><td class="editable-cell" contenteditable="true">75</td><td class="result-cell"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     <button id="apply-formula-nested" class="apply-btn">Terapkan Rumus</button>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg mb-3 text-center">Struktur Rumus IF Bertingkat</h3>
+                    <p class="mb-4 text-sm text-center">Ini seperti menumpuk IF di dalam IF. Excel akan berhenti di kondisi pertama yang terpenuhi.</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded">
+                            <strong>IF(Nilai > 85; "A"; ... )</strong>
+                            <p class="pl-4 text-gray-600">→ Cek dulu, apakah nilai > 85? Jika ya, hasilnya "A" dan selesai. Jika tidak, lanjut ke IF berikutnya.</p>
+                        </div>
+                        <div class="bg-green-50 border-l-4 border-green-500 p-3 rounded">
+                            <strong>IF(Nilai > 70; "B"; ... )</strong>
+                            <p class="pl-4 text-gray-600">→ Jika tidak > 85, cek lagi, apakah > 70? Jika ya, hasilnya "B" dan selesai. Jika tidak, lanjut lagi.</p>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-3 rounded">
+                            <strong>IF(Nilai > 60; "C"; "D")</strong>
+                            <p class="pl-4 text-gray-600">→ Jika tidak > 70, cek lagi, apakah > 60? Jika ya, hasilnya "C". Jika semua gagal, hasilnya "D".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#00A6ED]">3. IFS: Cara Modern untuk Banyak Kondisi</h2>
+            <p class="text-center max-w-3xl mx-auto mb-4">Fungsi <strong>IFS</strong> adalah alternatif yang lebih rapi dan mudah dibaca daripada IF Bertingkat. Anda bisa mendaftar semua kondisi dan hasilnya secara berpasangan tanpa perlu menumpuk banyak kurung.</p>
+            <p class="text-center max-w-3xl mx-auto mb-8">Coba ubah nilai atau rumus IFS di bawah ini. Perhatikan betapa lebih sederhananya struktur rumusnya!</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div>
+                    <div class="worksheet-container">
+                        <div class="formula-bar">
+                            <span class="fx">fx</span>
+                            <span id="formula-input-ifs" class="editable-formula" contenteditable="true">=IFS(B2>85;"A"; B2>70;"B"; B2>60;"C"; TRUE;"D")</span>
+                        </div>
+                        <table class="excel-table" id="tabel-ifs">
+                            <thead>
+                                <tr>
+                                    <th class="top-left-cell"></th><th class="header-cell">A</th><th class="header-cell">B</th><th class="header-cell">C</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="row-header">1</td><td>Nama</td><td>Nilai</td><td>Predikat</td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">2</td><td>Budi</td><td class="editable-cell" contenteditable="true">88</td><td class="result-cell"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">3</td><td>Ani</td><td class="editable-cell" contenteditable="true">65</td><td class="result-cell"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">4</td><td>Candra</td><td class="editable-cell" contenteditable="true">92</td><td class="result-cell"></td>
+                                </tr>
+                                <tr>
+                                    <td class="row-header">5</td><td>Dita</td><td class="editable-cell" contenteditable="true">75</td><td class="result-cell"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     <button id="apply-formula-ifs" class="apply-btn">Terapkan Rumus</button>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-lg mb-3 text-center">Struktur Rumus IFS</h3>
+                     <div class="bg-gray-50 p-4 rounded-lg border">
+                        <p class="font-mono text-center text-base mb-4">=IFS(<span class="text-[#00A6ED]">tes1</span>; <span class="text-[#7FB800]">hasil1</span>; <span class="text-[#00A6ED]">tes2</span>; <span class="text-[#7FB800]">hasil2</span>; ...)</p>
+                        <div class="space-y-3 text-sm">
+                            <p>Excel akan mengecek setiap tes secara berurutan:</p>
+                            <p>1. Cek <strong class="text-[#00A6ED]">tes1</strong> (B2>85). Jika BENAR, hasilnya <strong class="text-[#7FB800]">hasil1</strong> ("A"), lalu berhenti.</p>
+                            <p>2. Jika tidak, cek <strong class="text-[#00A6ED]">tes2</strong> (B2>70). Jika BENAR, hasilnya <strong class="text-[#7FB800]">hasil2</strong> ("B"), lalu berhenti.</p>
+                            <p>3. ...dan begitu seterusnya.</p>
+                            <p>4. <strong class="text-gray-600">TRUE;"D"</strong>: Ini adalah "penangkap" terakhir. Jika tidak ada kondisi di atas yang terpenuhi, maka hasilnya adalah "D".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#00A6ED]">Kapan Pakai yang Mana?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center h-full flex flex-col justify-center">
+                    <div class="text-5xl mb-4">↔️</div>
+                    <h3 class="text-2xl font-bold mb-2">IF Tunggal</h3>
+                    <p class="text-gray-600">Ketika hanya ada <strong class="text-[#F6511D]">dua kemungkinan hasil</strong>.</p>
+                </div>
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center h-full flex flex-col justify-center">
+                    <div class="text-5xl mb-4">📶</div>
+                    <h3 class="text-2xl font-bold mb-2">IF Bertingkat</h3>
+                    <p class="text-gray-600">Ketika ada <strong class="text-gray-500">>2 hasil</strong> (cara lama, lebih rumit).</p>
+                </div>
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center h-full flex flex-col justify-center">
+                    <div class="text-5xl mb-4">✨</div>
+                    <h3 class="text-2xl font-bold mb-2">IFS</h3>
+                    <p class="text-gray-600">Ketika ada <strong class="text-[#7FB800]">>2 hasil</strong> (cara modern, lebih rapi).</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-12 text-gray-500 text-sm">
+            <p>Infografis ini dibuat untuk memvisualisasikan konsep fungsi IF di Excel secara sederhana dan menarik.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            function evaluateCondition(value, operator, conditionValue) {
+                switch (operator) {
+                    case '>': return value > conditionValue;
+                    case '<': return value < conditionValue;
+                    case '>=': return value >= conditionValue;
+                    case '<=': return value <= conditionValue;
+                    case '=': return value == conditionValue;
+                    case '!=': return value != conditionValue;
+                    default: return false;
+                }
+            }
+
+            function evaluateIFFormula(formula, value) {
+                try {
+                    let formulaToParse = formula.trim();
+                    if (!formulaToParse.toUpperCase().startsWith('=IF(')) return "Error: Rumus =IF(...)";
+
+                    formulaToParse = formulaToParse.substring(1);
+
+                    function parseNextIf(subFormula) {
+                        subFormula = subFormula.trim();
+                        if (!subFormula.toUpperCase().startsWith('IF(')) return subFormula.replace(/"/g, '');
+                        
+                        const content = subFormula.substring(3, subFormula.length - 1);
+                        
+                        let bracketCount = 0;
+                        let lastSplit = 0;
+                        const parts = [];
+
+                        for (let i = 0; i < content.length; i++) {
+                            if (content[i] === '(') bracketCount++;
+                            if (content[i] === ')') bracketCount--;
+                            if (content[i] === ';' && bracketCount === 0) {
+                                parts.push(content.substring(lastSplit, i).trim());
+                                lastSplit = i + 1;
+                            }
+                        }
+                        parts.push(content.substring(lastSplit).trim());
+
+                        if (parts.length !== 3) return "Error: Struktur IF salah";
+
+                        const [condition, trueVal, falseVal] = parts;
+                        
+                        const conditionMatch = condition.match(/B2\s*([<>=!]+)\s*(\d+)/);
+                        if (!conditionMatch) return "Error: Kondisi tidak valid";
+
+                        const [, operator, conditionValue] = conditionMatch;
+
+                        if (evaluateCondition(value, operator, parseInt(conditionValue))) {
+                            return trueVal.replace(/"/g, '');
+                        } else {
+                            return parseNextIf(falseVal);
+                        }
+                    }
+
+                    return parseNextIf(formulaToParse);
+                } catch (e) {
+                    return "Error: Rumus tidak valid";
+                }
+            }
+
+            function evaluateIFSFormula(formula, value) {
+                try {
+                    let formulaToParse = formula.trim();
+                    if (!formulaToParse.toUpperCase().startsWith('=IFS(')) return "Error: Rumus =IFS(...)";
+
+                    const content = formulaToParse.substring(5, formulaToParse.length - 1);
+                    const parts = content.split(';');
+
+                    if (parts.length % 2 !== 0) return "Error: Argumen berpasangan";
+
+                    for (let i = 0; i < parts.length; i += 2) {
+                        const condition = parts[i].trim();
+                        const result = parts[i + 1].trim().replace(/"/g, '');
+
+                        if (condition.toUpperCase() === 'TRUE') {
+                            return result;
+                        }
+
+                        const conditionMatch = condition.match(/B2\s*([<>=!]+)\s*(\d+)/);
+                        if (!conditionMatch) return "Error: Kondisi tidak valid";
+                        
+                        const [, operator, conditionValue] = conditionMatch;
+
+                        if (evaluateCondition(value, operator, parseInt(conditionValue))) {
+                            return result;
+                        }
+                    }
+                    return "#N/A";
+                } catch (e) {
+                    return "Error: Rumus tidak valid";
+                }
+            }
+
+            function updateStatusKelulusan() {
+                const formula = document.getElementById('formula-input-single').innerText;
+                const rows = document.querySelectorAll('#tabel-if-tunggal tbody tr:not(:first-child)');
+                rows.forEach(row => {
+                    const nilaiCell = row.querySelector('.editable-cell');
+                    if (!nilaiCell) return;
+                    const hasilCell = row.querySelector('.result-cell');
+                    const nilai = parseInt(nilaiCell.innerText) || 0;
+                    
+                    hasilCell.textContent = evaluateIFFormula(formula, nilai);
+                });
+            }
+
+            function updatePredikatNilai() {
+                const formula = document.getElementById('formula-input-nested').innerText;
+                const rows = document.querySelectorAll('#tabel-if-bertingkat tbody tr:not(:first-child)');
+                rows.forEach(row => {
+                    const nilaiCell = row.querySelector('.editable-cell');
+                    if (!nilaiCell) return;
+                    const hasilCell = row.querySelector('.result-cell');
+                    const nilai = parseInt(nilaiCell.innerText) || 0;
+                    
+                    hasilCell.textContent = evaluateIFFormula(formula, nilai);
+                });
+            }
+
+            function updatePredikatNilaiIFS() {
+                const formula = document.getElementById('formula-input-ifs').innerText;
+                const rows = document.querySelectorAll('#tabel-ifs tbody tr:not(:first-child)');
+                rows.forEach(row => {
+                    const nilaiCell = row.querySelector('.editable-cell');
+                    if (!nilaiCell) return;
+                    const hasilCell = row.querySelector('.result-cell');
+                    const nilai = parseInt(nilaiCell.innerText) || 0;
+                    
+                    hasilCell.textContent = evaluateIFSFormula(formula, nilai);
+                });
+            }
+
+            document.getElementById('apply-formula-single').addEventListener('click', updateStatusKelulusan);
+            document.getElementById('apply-formula-nested').addEventListener('click', updatePredikatNilai);
+            document.getElementById('apply-formula-ifs').addEventListener('click', updatePredikatNilaiIFS);
+
+            document.querySelectorAll('.editable-cell').forEach(cell => {
+                cell.addEventListener('input', () => {
+                    const text = cell.innerText;
+                    cell.innerText = text.replace(/[^0-9]/g, '');
+                    updateStatusKelulusan();
+                    updatePredikatNilai();
+                    updatePredikatNilaiIFS();
+                });
+            });
+
+            updateStatusKelulusan();
+            updatePredikatNilai();
+            updatePredikatNilaiIFS();
+        });
+    </script>
+</body>
+</html>
