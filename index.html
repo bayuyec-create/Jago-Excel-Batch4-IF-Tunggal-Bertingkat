@@ -130,6 +130,38 @@
         .apply-btn:hover {
             background-color: #008ac4;
         }
+        .logic-btn {
+            padding: 0.25rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            background-color: white;
+            margin: 0 0.25rem;
+        }
+        .logic-btn.selected {
+            background-color: #00A6ED;
+            color: white;
+            border-color: #00A6ED;
+        }
+        .logic-exercise-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 9999px;
+            cursor: pointer;
+            background-color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4b5563;
+            transition: all 0.2s;
+        }
+        .logic-exercise-btn:hover {
+            background-color: #f3f4f6;
+        }
+        .logic-exercise-btn.selected {
+            background-color: #00A6ED;
+            color: white;
+            border-color: #00A6ED;
+        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -168,6 +200,87 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#00A6ED]">Memahami Operator Uji Logika</h2>
+            <p class="text-center max-w-3xl mx-auto mb-6">Sebelum masuk ke rumus, kita perlu kenal dulu dengan "bahasa" untuk membandingkan sesuatu di Excel. Inilah yang disebut operator logika. Operator ini adalah inti dari setiap `tes_logika` dalam fungsi IF.</p>
+            <div class="max-w-md mx-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="border-b-2 p-3 bg-gray-50 font-semibold">Operator</th>
+                            <th class="border-b-2 p-3 bg-gray-50 font-semibold">Artinya</th>
+                            <th class="border-b-2 p-3 bg-gray-50 font-semibold">Contoh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 border-b font-mono font-bold text-lg text-center text-blue-600">></td>
+                            <td class="p-3 border-b">Lebih dari</td>
+                            <td class="p-3 border-b font-mono">B2 > 75</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 border-b font-mono font-bold text-lg text-center text-blue-600"><</td>
+                            <td class="p-3 border-b">Kurang dari</td>
+                            <td class="p-3 border-b font-mono">B2 < 60</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 border-b font-mono font-bold text-lg text-center text-blue-600">>=</td>
+                            <td class="p-3 border-b">Lebih dari atau sama dengan</td>
+                            <td class="p-3 border-b font-mono">B2 >= 75</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 border-b font-mono font-bold text-lg text-center text-blue-600"><=</td>
+                            <td class="p-3 border-b">Kurang dari atau sama dengan</td>
+                            <td class="p-3 border-b font-mono">B2 <= 60</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 border-b font-mono font-bold text-lg text-center text-blue-600">=</td>
+                            <td class="p-3 border-b">Sama dengan</td>
+                            <td class="p-3 border-b font-mono">B2 = 100</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 border-b font-mono font-bold text-lg text-center text-blue-600"><></td>
+                            <td class="p-3 border-b">Tidak sama dengan (kecuali)</td>
+                            <td class="p-3 border-b font-mono">B2 <> 0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#00A6ED]">Asah Logikamu: Benar atau Salah?</h2>
+            <p class="text-center max-w-3xl mx-auto mb-4">Pilih latihan di bawah, lalu tentukan apakah setiap angka menghasilkan jawaban "Benar" atau "Salah" sesuai instruksi.</p>
+            
+            <div id="logic-exercise-selector" class="flex justify-center flex-wrap gap-2 mb-4">
+                <button class="logic-exercise-btn" data-exercise-index="0">Kurang Dari (<)</button>
+                <button class="logic-exercise-btn" data-exercise-index="1">Lebih Dari (>)</button>
+                <button class="logic-exercise-btn" data-exercise-index="2">Kurang Dari Sama Dengan (<=)</button>
+                <button class="logic-exercise-btn" data-exercise-index="3">Lebih Dari Sama Dengan (>=)</button>
+                <button class="logic-exercise-btn" data-exercise-index="4">Sama Dengan (=)</button>
+                <button class="logic-exercise-btn" data-exercise-index="5">Tidak Sama Dengan (<>)</button>
+            </div>
+
+            <div id="logic-instruction-container" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md max-w-2xl mx-auto" role="alert">
+                <p class="font-bold">Instruksi:</p>
+                <p>Apakah setiap angka di bawah ini <span id="logic-instruction-text" class="font-bold"></span> <span id="logic-instruction-value" class="editable-cell" contenteditable="true">50</span>?</p>
+            </div>
+            <div class="max-w-sm mx-auto mt-6">
+                <table class="w-full" id="tabel-latihan-logika">
+                    <thead>
+                        <tr><th class="p-2">Angka</th><th class="p-2">Jawabanmu</th><th class="p-2 w-10">Koreksi</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t"><td class="p-2 text-center font-bold text-xl editable-cell" contenteditable="true">65</td><td class="p-2 text-center"><button class="logic-btn" data-answer="true">Benar</button><button class="logic-btn" data-answer="false">Salah</button></td><td class="p-2 text-center feedback-cell"></td></tr>
+                        <tr class="border-t"><td class="p-2 text-center font-bold text-xl editable-cell" contenteditable="true">25</td><td class="p-2 text-center"><button class="logic-btn" data-answer="true">Benar</button><button class="logic-btn" data-answer="false">Salah</button></td><td class="p-2 text-center feedback-cell"></td></tr>
+                        <tr class="border-t"><td class="p-2 text-center font-bold text-xl editable-cell" contenteditable="true">50</td><td class="p-2 text-center"><button class="logic-btn" data-answer="true">Benar</button><button class="logic-btn" data-answer="false">Salah</button></td><td class="p-2 text-center feedback-cell"></td></tr>
+                        <tr class="border-t"><td class="p-2 text-center font-bold text-xl editable-cell" contenteditable="true">12</td><td class="p-2 text-center"><button class="logic-btn" data-answer="true">Benar</button><button class="logic-btn" data-answer="false">Salah</button></td><td class="p-2 text-center feedback-cell"></td></tr>
+                    </tbody>
+                </table>
+                <button id="apply-latihan-logika" class="apply-btn">Cek Jawaban</button>
             </div>
         </section>
 
@@ -336,7 +449,7 @@
             </div>
         </section>
 
-        <section class="bg-white rounded-lg shadow-md p-6">
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8">
             <h2 class="text-3xl font-bold text-center mb-6 text-[#00A6ED]">Kapan Pakai yang Mana?</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center h-full flex flex-col justify-center">
@@ -357,6 +470,33 @@
             </div>
         </section>
 
+        <section class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#00A6ED]">IF Bertingkat vs. IFS: Mana yang Lebih Baik?</h2>
+            <p class="text-center max-w-3xl mx-auto mb-6">Keduanya bisa menyelesaikan masalah dengan banyak kondisi, tapi cara kerjanya sedikit berbeda. Memilih yang tepat bisa membuat rumusmu lebih efisien dan mudah dipahami. Jadi, intinya sesuaikan dengan versi Excel dan juga preferensi kalian, pakai aja yang menurut kalian paling mudah.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-50 p-6 rounded-lg border">
+                    <h3 class="text-xl font-bold mb-3">IF Bertingkat</h3>
+                    <p class="mb-4 text-sm">Ini adalah metode klasik dengan menumpuk fungsi IF di dalam argumen `[nilai_jika_salah]` dari IF sebelumnya. Setiap IF baru adalah cabang dari kondisi "salah" sebelumnya.</p>
+                    <h4 class="font-semibold mb-2">Hal yang perlu diperhatikan:</h4>
+                    <ul class="list-disc list-inside space-y-2 text-sm">
+                        <li><strong class="text-red-600">Risiko Kurung:</strong> Anda harus sangat teliti! Jumlah kurung tutup `)` di akhir harus sama persis dengan jumlah `IF` yang Anda gunakan. Kurang satu saja bisa error.</li>
+                        <li><strong>Sulit Dibaca:</strong> Jika sudah lebih dari 3-4 tingkat, rumusnya bisa jadi sangat panjang dan sulit untuk dilacak logikanya.</li>
+                        <li><strong>Urutan Penting:</strong> Sama seperti IFS, urutan pengecekan kondisi sangat berpengaruh pada hasil akhir. Selalu mulai dari yang paling spesifik.</li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                    <h3 class="text-xl font-bold mb-3">IFS</h3>
+                    <p class="mb-4 text-sm">Ini adalah fungsi yang lebih modern (ada di Excel 2019/365 ke atas). Anda cukup menuliskan pasangan `[tes_logika], [hasil_jika_benar]` secara berurutan.</p>
+                    <h4 class="font-semibold mb-2">Hal yang perlu diperhatikan:</h4>
+                    <ul class="list-disc list-inside space-y-2 text-sm">
+                        <li><strong class="text-green-600">Lebih Rapi:</strong> Tidak ada tumpukan kurung yang membingungkan. Strukturnya lurus dan lebih mudah dibaca.</li>
+                        <li><strong>Kondisi "Sisa":</strong> Untuk menangkap semua kondisi yang tidak terpenuhi, gunakan `TRUE` sebagai tes logika terakhir. Contoh: `...; TRUE; "Hasil Lainnya")`. Tanpa ini, jika tidak ada kondisi yang cocok, hasilnya akan error `#N/A`.</li>
+                        <li><strong>Kompatibilitas:</strong> Rumus ini tidak akan berfungsi jika file dibuka dengan versi Excel yang lebih lama (misal Excel 2016 atau sebelumnya).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
         <footer class="text-center mt-12 text-gray-500 text-sm">
             <p>Infografis ini dibuat untuk memvisualisasikan konsep fungsi IF di Excel secara sederhana dan menarik.</p>
         </footer>
@@ -372,7 +512,7 @@
                     case '>=': return value >= conditionValue;
                     case '<=': return value <= conditionValue;
                     case '=': return value == conditionValue;
-                    case '!=': return value != conditionValue;
+                    case '<>': return value != conditionValue;
                     default: return false;
                 }
             }
@@ -498,11 +638,94 @@
                 });
             }
 
+            // Logic for the new logic practice section
+            const logicExercises = [
+                { text: 'kurang dari', condition: (val, comp) => val < comp },
+                { text: 'lebih dari', condition: (val, comp) => val > comp },
+                { text: 'kurang dari atau sama dengan', condition: (val, comp) => val <= comp },
+                { text: 'lebih dari atau sama dengan', condition: (val, comp) => val >= comp },
+                { text: 'sama dengan', condition: (val, comp) => val == comp },
+                { text: 'tidak sama dengan', condition: (val, comp) => val != comp }
+            ];
+            let currentExerciseIndex = 0;
+            const logicTable = document.getElementById('tabel-latihan-logika');
+            const instructionText = document.getElementById('logic-instruction-text');
+            const instructionValue = document.getElementById('logic-instruction-value');
+            const exerciseButtons = document.querySelectorAll('.logic-exercise-btn');
+
+            function setupExercise(index) {
+                currentExerciseIndex = index;
+                instructionText.innerHTML = logicExercises[index].text;
+                
+                exerciseButtons.forEach((btn, i) => {
+                    btn.classList.toggle('selected', i === index);
+                });
+
+                logicTable.querySelectorAll('tbody tr').forEach(row => {
+                    row.querySelector('.feedback-cell').textContent = '';
+                    const answerCell = row.cells[1];
+                    answerCell.dataset.userChoice = '';
+                    answerCell.querySelectorAll('.logic-btn').forEach(btn => btn.classList.remove('selected'));
+                });
+            }
+            
+            function clearLogicExerciseFeedback() {
+                 logicTable.querySelectorAll('tbody tr').forEach(row => {
+                    row.querySelector('.feedback-cell').textContent = '';
+                });
+            }
+
+            exerciseButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setupExercise(parseInt(btn.dataset.exerciseIndex));
+                });
+            });
+
+            logicTable.querySelectorAll('.logic-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const parent = btn.parentElement;
+                    parent.querySelectorAll('.logic-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    parent.dataset.userChoice = btn.dataset.answer;
+                });
+            });
+
+            document.getElementById('apply-latihan-logika').addEventListener('click', () => {
+                const rows = logicTable.querySelectorAll('tbody tr');
+                const currentCondition = logicExercises[currentExerciseIndex].condition;
+                const comparisonValue = parseInt(instructionValue.innerText) || 0;
+
+                rows.forEach(row => {
+                    const number = parseInt(row.cells[0].innerText) || 0;
+                    const userChoice = row.cells[1].dataset.userChoice;
+                    const feedbackCell = row.querySelector('.feedback-cell');
+                    
+                    const correctAnswer = currentCondition(number, comparisonValue).toString();
+
+                    if (userChoice === undefined || userChoice === '') {
+                        feedbackCell.textContent = '';
+                        return;
+                    }
+
+                    if (userChoice === correctAnswer) {
+                        feedbackCell.textContent = '✔️';
+                        feedbackCell.style.color = 'green';
+                    } else {
+                        feedbackCell.textContent = '❌';
+                        feedbackCell.style.color = 'red';
+                    }
+                });
+            });
+            
+            logicTable.querySelectorAll('.editable-cell').forEach(cell => cell.addEventListener('input', clearLogicExerciseFeedback));
+            instructionValue.addEventListener('input', clearLogicExerciseFeedback);
+
+
             document.getElementById('apply-formula-single').addEventListener('click', updateStatusKelulusan);
             document.getElementById('apply-formula-nested').addEventListener('click', updatePredikatNilai);
             document.getElementById('apply-formula-ifs').addEventListener('click', updatePredikatNilaiIFS);
 
-            document.querySelectorAll('.editable-cell').forEach(cell => {
+            document.querySelectorAll('.worksheet-container .editable-cell').forEach(cell => {
                 cell.addEventListener('input', () => {
                     const text = cell.innerText;
                     cell.innerText = text.replace(/[^0-9]/g, '');
@@ -512,6 +735,8 @@
                 });
             });
 
+            // Initial setup
+            setupExercise(0);
             updateStatusKelulusan();
             updatePredikatNilai();
             updatePredikatNilaiIFS();
